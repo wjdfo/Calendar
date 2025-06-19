@@ -5,9 +5,7 @@ import lombok.*;
 
 @Entity
 @Getter
-@AllArgsConstructor
-@NoArgsConstructor
-@Builder
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Account {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY) // DB의 자동 증가 기능 사용
@@ -22,4 +20,11 @@ public class Account {
 
     @Column(name = "password", nullable = false)
     private String password;
+
+    @Builder
+    public Account(String email, String name, String password) {
+        this.email = email;
+        this.name = name;
+        this.password = password;
+    }
 }
