@@ -1,39 +1,35 @@
 package com.example.calendar.accounts.controller;
 
-import com.example.calendar.accounts.dto.AddUserRequest;
-import com.example.calendar.accounts.dto.LoginUserRequestDto;
+import com.example.calendar.accounts.dto.*;
 import com.example.calendar.accounts.service.UserService;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.*;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.*;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 
 @RequiredArgsConstructor
-@Controller
+@RestController
+@RequestMapping("/api/accounts")
 public class UserController {
 
     private final UserService userService;
 
-    @PostMapping("/api/login")
-    public String login(LoginUserRequestDto request) {
-        System.out.println(request.getEmail());
-        System.out.println(request.getPassword());
-
-        return "login";
+    @PostMapping("/login")
+    public ResponseEntity<LoginUserResponseDto> login(@RequestBody LoginUserRequestDto request) {
+        return ResponseEntity.status(HttpStatus.OK)
+            .body(userService.signin(request));
     }
 
-    @PostMapping("/api/signup")
-    public String signup(AddUserRequest request) {
-        userService.save(request);
-
-        return "hello login";
+    @PostMapping("/signup")
+    public ResponseEntity<SignupUserResponseDto> signup(@RequestBody SignupUserRequestDto request) {
+        return ResponseEntity.status(HttpStatus.CREATED)
+            .body(userService.signup(request));
     }
 
-    @GetMapping("/api/logout")
+    // 향후 구현: 로그아웃하면 refresh token DB에서 삭제시키는 기능
+    @PostMapping("/logout")
     public String logout(HttpServletRequest request, HttpServletResponse response) {
         new SecurityContextLogoutHandler().logout(request, response, SecurityContextHolder.getContext().getAuthentication());
 
