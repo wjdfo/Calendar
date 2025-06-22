@@ -68,7 +68,7 @@ public class WebSecurityConfig {
                 // 인증 없이 접근 가능한 경로
                 .requestMatchers("/api/accounts/login").permitAll() // 로그인
                 .requestMatchers("/api/accounts/signup").permitAll() // 회원가입
-                .requestMatchers("/api/token").permitAll() // 토큰 재발급 API
+                .requestMatchers("/api/accounts/token").permitAll() // 토큰 재발급 API
                 // 이 외의 모든 경로는 인증 필요
                 .anyRequest().authenticated()
             )
