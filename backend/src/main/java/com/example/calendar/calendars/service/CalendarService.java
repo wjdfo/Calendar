@@ -64,4 +64,16 @@ public class CalendarService {
 
         return CalendarResponseDto.fromEntity(calendar);
     }
+
+    // 일정 삭제 메서드
+    public void deleteCalendar(Long calendarId, Long userId) {
+        Calendar calendar = calendarRepository.findById(calendarId)
+                .orElseThrow(() -> new IllegalArgumentException("해당 일정이 존재하지 않습니다."));
+
+        if (!calendar.getUserId().equals(userId)) {
+            throw new IllegalArgumentException("해당 사용자의 일정이 아닙니다.");
+        }
+
+        calendarRepository.delete(calendar);
+    }
 }

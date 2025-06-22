@@ -49,4 +49,15 @@ public class CalendarController {
         return ResponseEntity.ok(response);
     }
 
+    //일정 삭제 기능
+    @DeleteMapping("/{calendarId}")
+    public ResponseEntity<String> deleteCalendar(
+            @PathVariable Long calendarId,
+            @RequestHeader(value = "Authorization", required = false) String token) {
+
+        Long userId = 1L; // 인증 구현 전까지는 하드코딩
+        calendarService.deleteCalendar(calendarId, userId);
+        return ResponseEntity.ok("정상적으로 삭제되었습니다.");
+        // return ResponseEntity.noContent().build(); // 204 No Content
+    }
 }
