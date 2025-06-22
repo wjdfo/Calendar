@@ -1,4 +1,4 @@
-package com.example.calendar.entity;
+package com.example.calendar.calendars.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
