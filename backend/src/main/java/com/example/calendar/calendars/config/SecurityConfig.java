@@ -17,7 +17,8 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(HttpMethod.GET, "/api/**").permitAll()   // GET 허용
-                        .requestMatchers(HttpMethod.POST, "/api/**").permitAll()  //POST 허용
+                        .requestMatchers(HttpMethod.POST, "/api/**").permitAll()  // POST 허용
+                        .requestMatchers(HttpMethod.PUT, "/api/**").permitAll()   // PUT 허용
                         .anyRequest().permitAll()
                 )
                 .build();
