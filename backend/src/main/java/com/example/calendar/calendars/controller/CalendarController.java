@@ -36,4 +36,17 @@ public class CalendarController {
         CalendarResponseDto response = calendarService.createCalendar(requestDto, userId);
         return ResponseEntity.status(201).body(response);
     }
+
+    //일정 수정 기능
+    @PutMapping("/{id}")
+    public ResponseEntity<CalendarResponseDto> updateCalendar(
+            @PathVariable Long id,
+            @RequestBody CalendarRequestDto requestDto,
+            @RequestHeader(value = "Authorization", required = false) String token) {
+
+        Long userId = 1L; // 임시 하드코딩
+        CalendarResponseDto response = calendarService.updateCalendar(id, requestDto, userId);
+        return ResponseEntity.ok(response);
+    }
+
 }
