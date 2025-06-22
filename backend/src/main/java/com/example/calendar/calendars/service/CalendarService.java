@@ -9,6 +9,9 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.stream.Collectors;
 import jakarta.transaction.Transactional;
+import com.example.calendar.calendars.exception.CalendarNotFoundException;
+import com.example.calendar.calendars.exception.UnauthorizedCalendarAccessException;
+
 
 @Service
 @RequiredArgsConstructor
@@ -68,10 +71,10 @@ public class CalendarService {
     // 일정 삭제 메서드
     public void deleteCalendar(Long calendarId, Long userId) {
         Calendar calendar = calendarRepository.findById(calendarId)
-                .orElseThrow(() -> new IllegalArgumentException("해당 일정이 존재하지 않습니다."));
+                .orElseThrow(() -> new CalendarNotFoundException("해당 일정이 존재하지 않습니다."));
 
         if (!calendar.getUserId().equals(userId)) {
-            throw new IllegalArgumentException("해당 사용자의 일정이 아닙니다.");
+            throw new UnauthorizedCalendarAccessException("해당 사용자의 일정이 아닙니다.");
         }
 
         calendarRepository.delete(calendar);
