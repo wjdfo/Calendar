@@ -3,6 +3,8 @@ package com.example.jocso.exception;
 import com.example.jocso.accounts.dto.ErrorResponseDto;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import com.example.jocso.calendars.exception.CalendarNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AccessDeniedException;
@@ -50,6 +52,12 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ErrorResponseDto> handleAccessDeniedException(AccessDeniedException ex) {
         return ResponseEntity.status(HttpStatus.FORBIDDEN)
             .body(new ErrorResponseDto("Access denied: You do not have sufficient permissions.", "ACCESS_DENIED"));
+    }
+
+    // 404 Not Found
+    @ExceptionHandler(CalendarNotFoundException.class)
+    public ResponseEntity<String> handleNotFound(CalendarNotFoundException ex) {
+        return ResponseEntity.status(404).body(ex.getMessage());
     }
 
     // 500 Internal Server Error

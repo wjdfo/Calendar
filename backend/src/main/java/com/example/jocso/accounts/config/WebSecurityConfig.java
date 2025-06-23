@@ -1,9 +1,6 @@
 package com.example.jocso.accounts.config;
 
 import com.example.jocso.accounts.jwt.TokenProvider; // TokenProvider 임포트 추가
-
-import static org.springframework.boot.autoconfigure.security.servlet.PathRequest.toH2Console;
-
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -40,7 +37,6 @@ public class WebSecurityConfig {
     @Bean
     public WebSecurityCustomizer configure() {
         return (web) -> web.ignoring()
-            .requestMatchers(toH2Console())
             .requestMatchers("/static/**", "/css/**", "/js/**", "/images/**", "/error", "/favicon.ico"); // 정적 리소스 추가
     }
 
