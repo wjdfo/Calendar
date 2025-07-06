@@ -7,6 +7,7 @@ import lombok.*;
 
 @Getter
 @Setter
+@AllArgsConstructor
 public class LoginUserRequestDto {
     @NotBlank(message = "E-mail cannot be empty.")
     @Email(message = "Invalid E-mail foramt.")

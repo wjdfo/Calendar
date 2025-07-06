@@ -5,6 +5,7 @@ import com.example.jocso.accounts.service.TokenService;
 import com.example.jocso.accounts.service.UserService;
 import jakarta.servlet.http.*;
 import jakarta.validation.Valid;
+import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.*;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -21,8 +22,20 @@ public class UserController {
 
     @PostMapping("/login")
     public ResponseEntity<LoginUserResponseDto> login(@Valid @RequestBody LoginUserRequestDto request) {
+        Map<String, String> tokens = userService.signin(request);
+        String accessToken = tokens.get("accessToken");
+        String refreshToken = tokens.get("refreshToken");
+
+        ResponseCookie cookie = ResponseCookie.from("refresh_token", refreshToken)
+            .httpOnly(true)
+            .secure(false)
+            .path("/")
+            .maxAge(60 * 60 * 24 * 7)
+            .build();
+
         return ResponseEntity.status(HttpStatus.OK)
-            .body(userService.signin(request));
+            .header(HttpHeaders.SET_COOKIE, cookie.toString())
+            .body(new LoginUserResponseDto(accessToken));
     }
 
     @PostMapping("/signup")

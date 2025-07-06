@@ -5,6 +5,8 @@ import com.example.jocso.accounts.dto.*;
 import com.example.jocso.accounts.jwt.TokenProvider;
 import com.example.jocso.accounts.repository.*;
 import java.time.Duration;
+import java.util.HashMap;
+import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -19,7 +21,7 @@ public class UserService {
     private final TokenProvider tokenProvider;
     private final RefreshTokenRepository refreshTokenRepository;
 
-    public LoginUserResponseDto signin(LoginUserRequestDto request) {
+    public Map<String, String> signin(LoginUserRequestDto request) {
         User user = userRepository.findByEmail(request.getEmail())
             .orElseThrow(() -> new IllegalArgumentException("Invalid credentials: User not found."));
 
@@ -42,7 +44,11 @@ public class UserService {
 
         String accessToken = tokenProvider.generateToken(user, Duration.ofHours(1));
 
-        return new LoginUserResponseDto(accessToken, refreshToken);
+        Map<String, String> tokens = new HashMap<>();
+        tokens.put("accessToken", accessToken);
+        tokens.put("refreshToken", refreshToken);
+
+        return tokens;
     }
 
     public SignupUserResponseDto signup(SignupUserRequestDto request) {
